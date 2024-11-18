@@ -1,15 +1,17 @@
-## **Blockchain Project**
+# **Blockchain Project**
 
 ## **Project Objective**
 
-This project is a simple blockchain implementation in C++ with features such as transactions, a ledger, and mining functionality. It is designed to demonstrate how a basic blockchain operates, with the ability to create blocks, validate transactions, and mine them through a proof-of-work algorithm.
+The objective of this project is to create a simple blockchain implementation in C++ that mimics the core functionality of a cryptocurrency blockchain. This includes creating a ledger of blocks, supporting transactions, and implementing mining functionality using the SHA-256 hash algorithm.
 
 ## **Overview**
-This C++ project implements a basic blockchain from scratch. It features the following components:
+This project implements a basic blockchain with transaction handling and mining features. The blockchain is built using C++ and the SHA-256 hashing algorithm for block validation. It simulates transactions within blocks and requires computational work (proof-of-work) to mine new blocks.
 
-**Transactions:** A system to send and receive transactions between users.
-**Ledger:** The blockchain serves as a ledger for storing transaction data.
-**Mining:** A proof-of-work mining algorithm that requires computational effort to mine new blocks, ensuring the security and integrity of the blockchain.
+## **Key Features:**
+- **Blockchain:** A linked list of blocks, each containing a set of transactions.
+- **Transactions:** Support for adding transactions to a block.
+- **Mining:** The ability to mine new blocks by solving a proof-of-work problem.
+- **SHA-256:** Used to generate block hashes to ensure data integrity and security.
 
 The project utilizes a custom SHA-256 hashing algorithm (implemented in pure C++) to secure transactions and links blocks together, mimicking the fundamental operation of popular blockchains like Bitcoin.
 
@@ -20,53 +22,34 @@ The project utilizes a custom SHA-256 hashing algorithm (implemented in pure C++
 - C++ Compiler: GCC 4.8 or later (supports C++11 or C++17)
 - Libraries: No external libraries are required, as the SHA-256 hashing is implemented in pure C++.
 
+## **Core Logic and Functions**
 
-## **Installing**
-1. Clone this repository:
+### **Blockchain Structure**
+The blockchain consists of a series of blocks that are chained together using the previous hash stored in each block. Each block contains:
 
-```bash
-git clone https://github.com/xVictoriaMx/blockchain-project.git
-cd blockchain-project
-```
-2. Compile the Program: Ensure you have a C++ compiler installed (e.g., g++).
+- **Index:** The position of the block in the chain.
+- **Timestamp:** The creation time of the block.
+- **Transactions:** A list of transactions included in the block.
+- **Previous Hash:** The hash of the previous block.
+- **Hash:** The SHA-256 hash of the current block.
 
-```bash
-g++ -std=c++17 -o blockchain main.cpp
-```
-3. Run the Program: Execute the compiled program:
+### **Transactions**
+Transactions are the core component of the blockchain. Each transaction consists of:
 
-```bash
-./blockchain
-```
+- **Sender:** The account from which funds are being sent.
+- **Receiver:** The account receiving the funds.
+- **Amount:** The amount of funds being transferred.
+Transactions are added to the current block until the block reaches a predefined size or until mining begins.
 
-No further modifications are needed for the basic setup. The program will run a demo of transactions being added and mined into blocks.
+### **Mining**
+Mining involves finding a valid *nonce* (a number) that, when hashed with the rest of the block’s contents, produces a hash that starts with a specific number of leading zeros. This process simulates the computational work required for the proof-of-work in cryptocurrencies.
 
-## **Executing Program**
+The mining process is handled by the `mineBlock` function, which continuously hashes the block’s contents until the required number of leading zeros is found.
 
-To run the program, follow these steps:
+### **SHA-256 Hashing**
+SHA-256 is used to create a unique hash for each block. This ensures that each block’s content is tamper-proof, as even the smallest change in data will result in a completely different hash.
 
-1. Clone the repository and navigate to the project directory.
-2. Compile the project using the following command:
-```bash
-g++ -std=c++17 -o blockchain main.cpp)
-```
-4. Once compiled, run the program: 
-```bash
-./blockchain
-```
-You should see the blockchain being created and transactions being mined with output like this:
-```cpp
-yaml
-Mining first block...
-Block mined: <hash>
-Blockchain:
-Block 1 <hash>
-Previous: <previous block hash>
-Timestamp: <timestamp>
-Transactions:
-  - Alice -> Bob : 10
-Nonce: <nonce>
-```
+The `sha256` function is used to hash the block’s contents, including the index, timestamp, transactions, and previous block’s hash.
 
 ## **License**
 
