@@ -2,9 +2,17 @@
 
 using namespace std;
 
-Transaction::Transaction(const string& sender, const string& receiver, double amount)
-    : sender(sender), receiver(receiver), amount(amount) {}
+class Transaction {
+public:
+    Transaction(const string& sender, const string& receiver, double amount)
+        : sender(sender), receiver(receiver), amount(amount) {}
 
-string Transaction::getSender() const { return sender; }
-string Transaction::getReceiver() const { return receiver; }
-double Transaction::getAmount() const { return amount; }
+    string getSender() const { return sender; }
+    string getReceiver() const { return receiver; }
+    double getAmount() const { return amount; }
+
+private:
+    string sender;
+    string receiver;
+    double amount;
+};
