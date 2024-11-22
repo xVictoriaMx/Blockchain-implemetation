@@ -1,3 +1,4 @@
+#include <string>
 #include <sstream>
 #include <ctime>
 #include <iomanip>
@@ -11,16 +12,18 @@
 using namespace std;
 using namespace Blockchain;
 
-
 int main() {
-    SHA256 sha256;
-    const char* input = "test hash";
-    sha256.update(reinterpret_cast<const uint8_t*>(input), strlen(input));
-    auto hash = sha256.finalize();
+    Blockchain blockchain;
 
-    for (auto byte : hash)
-        cout << hex << (byte >> 4) << (byte & 0xF);
-    cout << endl;
+    vector<Transaction> transactions = {
+        Transaction("Tori", "Sam", 50.0),
+        Transaction("Maya", "Isaac", 30.0)
+    };
+    blockchain.addBlock(transactions);
+
+    for (const auto& block : blockchain.getChain()) {
+        cout << "Block Index: " << block.getIndex() << ", Hash: " << block.getHash() << endl;
+    }
 
     return 0;
 }
