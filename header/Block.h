@@ -1,35 +1,31 @@
+#ifndef BLOCK_H
+#define BLOCK_H
+
+#include "Transaction.h"
 #include <vector>
 #include <string>
 #include <ctime>
-#include <sstream>
-#include <iomanip>
-#include "Transaction.h"  
-#include "SHA256.h"   
 
 using namespace std;
 
-namespace Blockchain {
+class Block {
+public:
+    Block(int index, const string& previousHash, const vector<Transaction>& transactions);
 
-    class Block {
-    public:
-        Block(uint32_t index, vector<Transaction> transactions, const string& previousHash);
+    int getIndex() const;
+    string getPreviousHash() const;
+    string getHash() const;
+    vector<Transaction> getTransactions() const;
 
-        string calculateHash() const;
+    string calculateHash() const;
 
-        uint32_t getIndex() const;
-        const string& getHash() const;
-        const string& getPreviousHash() const;
-
-    private:
-        uint32_t index;
-        vector<Transaction> transactions;
-        string hash;
-        string previousHash;
-        time_t timestamp;
-
-        static string sha256(const string& input);
-    };
-
-} 
+private:
+    int index;
+    string previousHash;
+    string hash;
+    time_t timestamp;
+    vector<Transaction> transactions;
+};
 
 #endif 
+

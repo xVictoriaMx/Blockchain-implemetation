@@ -3,7 +3,7 @@
 
 #include <array>
 #include <cstdint>
-#include <vector>
+#include <string>
 
 using namespace std;
 
@@ -17,6 +17,8 @@ public:
     array<uint8_t, HashSize> finalize();
     void reset();
 
+    static string hash(const string& input);
+
 private:
     static const size_t BlockSize = 64;
 
@@ -25,6 +27,8 @@ private:
     size_t bufferLength = 0;
     uint64_t bitLength = 0;
 
+    void processBlock();
+
     static inline uint32_t rotateRight(uint32_t x, uint32_t n);
     static inline uint32_t choose(uint32_t x, uint32_t y, uint32_t z);
     static inline uint32_t majority(uint32_t x, uint32_t y, uint32_t z);
@@ -32,8 +36,6 @@ private:
     static inline uint32_t sigma1(uint32_t x);
     static inline uint32_t delta0(uint32_t x);
     static inline uint32_t delta1(uint32_t x);
-
-    void processBlock();
 
     static constexpr array<uint32_t, 64> K = {
         0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
