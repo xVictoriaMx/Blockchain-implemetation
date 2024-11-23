@@ -15,6 +15,13 @@ This project implements a basic blockchain with transaction handling and mining 
 
 The project utilizes a custom SHA-256 hashing algorithm (implemented in pure C++) to secure transactions and links blocks together, mimicking the fundamental operation of popular blockchains like Bitcoin.
 
+## **Demo**
+
+
+https://github.com/user-attachments/assets/729fee34-de4c-4abf-8432-c404859d1380
+
+
+
 ## **Getting Started**
 
 **Dependencies:**
