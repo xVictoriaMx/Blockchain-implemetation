@@ -1,29 +1,54 @@
 #include "Block.h"
-#include "SHA256.h" 
+#include <iostream>
 #include <sstream>
-#include <iomanip>
+#include "SHA256.h"
 
 using namespace std;
 
-Block::Block(int index, const string& previousHash, const vector<Transaction>& transactions)
-    : index(index), previousHash(previousHash), transactions(transactions), timestamp(time(nullptr)) {
+ostream& operator<<(ostream& os, const BlockStatus& status) {
+    switch (status) {
+    case BlockStatus::PENDING: os << "PENDING"; break;
+    case BlockStatus::CONFIRMED: os << "CONFIRMED"; break;
+    default: os << "UNKNOWN"; break;
+    }
+    return os;
+}
+
+
+
+Block::Block(int index, const string& previousHash, vector<Transaction> transactions, BlockStatus status)
+    : index(index), previousHash(previousHash), transactions(move(transactions)), status(status) {
+    timestamp = time(nullptr);
     hash = calculateHash();
 }
 
-int Block::getIndex() const {
-    return index;
-}
-
-string Block::getPreviousHash() const {
-    return previousHash;
-}
-
-string Block::getHash() const {
+const string& Block::getHash() const {
     return hash;
 }
 
-vector<Transaction> Block::getTransactions() const {
-    return transactions;
+const string& Block::getPreviousHash() const {
+    return previousHash;
+}
+
+BlockStatus Block::getStatus() const {
+    return status;
+}
+
+void Block::setStatus(BlockStatus newStatus) {
+    status = newStatus;
+}
+
+void Block::printBlock() const {
+    cout << "Block #" << index << "\n";
+    cout << "Hash: " << hash << "\n";
+    cout << "Previous Hash: " << previousHash << "\n";
+    cout << "Timestamp: " << timestamp << "\n";
+    cout << "Status: " << status << "\n";
+    cout << "Transactions:\n";
+    for (const auto& tx : transactions) {
+        cout << "  - " << tx.getSender() << " -> " << tx.getReceiver() << ": " << tx.getAmount() << "\n";
+    }
+    cout << "------------------------------------\n";
 }
 
 string Block::calculateHash() const {
@@ -33,10 +58,9 @@ string Block::calculateHash() const {
     for (const auto& tx : transactions) {
         ss << tx.getSender() << tx.getReceiver() << tx.getAmount();
     }
-    auto hashArray = sha256.finalize();
-    stringstream hashStream;
-    for (auto byte : hashArray) {
-        hashStream << hex << setw(2) << setfill('0') << static_cast<int>(byte);
-    }
-    return hashStream.str();
+    string blockData = ss.str();
+
+    sha256.update(reinterpret_cast<const uint8_t*>(blockData.data()), blockData.size());
+    auto finalHash = sha256.finalize();
+    return hashToString(finalHash);
 }

@@ -1,8 +1,9 @@
 #ifndef BLOCKCHAIN_H
 #define BLOCKCHAIN_H
 
-#include "Block.h"
 #include <vector>
+#include <memory>
+#include "Block.h"
 
 using namespace std;
 
@@ -10,14 +11,13 @@ class Blockchain {
 public:
     Blockchain();
 
-    Block createBlock(const vector<Transaction>& transactions);
-    void mineBlock(Block& block);
-    void addBlock(const Block& block);
-
-    const vector<Block>& getChain() const;
+    void addBlock(const vector<Transaction>& transactions);
+    void printChain() const;
 
 private:
-    vector<Block> chain;
+    vector<shared_ptr<Block>> chain;
+
+    shared_ptr<Block> createGenesisBlock();
 };
 
 #endif

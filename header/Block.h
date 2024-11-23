@@ -1,23 +1,30 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include "Transaction.h"
-#include <vector>
 #include <string>
+#include <vector>
 #include <ctime>
+#include "Transaction.h"
 
 using namespace std;
 
+enum class BlockStatus {
+    PENDING,
+    CONFIRMED
+};
+
+ostream& operator<<(ostream& os, const BlockStatus& status);
+
 class Block {
 public:
-    Block(int index, const string& previousHash, const vector<Transaction>& transactions);
+    Block(int index, const std::string& previousHash, std::vector<Transaction> transactions, BlockStatus status = BlockStatus::PENDING);
 
-    int getIndex() const;
-    string getPreviousHash() const;
-    string getHash() const;
-    vector<Transaction> getTransactions() const;
+    const string& getHash() const;
+    const string& getPreviousHash() const;
+    BlockStatus getStatus() const;
+    void setStatus(BlockStatus newStatus);
 
-    string calculateHash() const;
+    void printBlock() const;
 
 private:
     int index;
@@ -25,7 +32,9 @@ private:
     string hash;
     time_t timestamp;
     vector<Transaction> transactions;
+    BlockStatus status;
+
+    string calculateHash() const;
 };
 
 #endif 
-

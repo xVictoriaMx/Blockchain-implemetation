@@ -1,29 +1,23 @@
 #include "Blockchain.h"
+#include <iostream>
 
-using namespace std;
+using namespace std; 
 
 Blockchain::Blockchain() {
-    // Add genesis block
-    Block genesisBlock(0, "0", {});
-    chain.push_back(genesisBlock);
+    chain.emplace_back(createGenesisBlock());
 }
 
-Block Blockchain::createBlock(const vector<Transaction>& transactions) {
-    int index = chain.size();
-    string previousHash = chain.back().getHash();
-    return Block(index, previousHash, transactions);
+void Blockchain::addBlock(const vector<Transaction>& transactions) {
+    auto previousBlock = chain.back();
+    chain.push_back(make_shared<Block>(chain.size(), previousBlock->getHash(), transactions));
 }
 
-void Blockchain::mineBlock(Block& block) {
-    while (block.calculateHash().substr(0, 4) != "0000") {
-        block = Block(block.getIndex(), block.getPreviousHash(), block.getTransactions());
+void Blockchain::printChain() const {
+    for (const auto& block : chain) {
+        block->printBlock();
     }
 }
 
-void Blockchain::addBlock(const Block& block) {
-    chain.push_back(block);
-}
-
-const vector<Block>& Blockchain::getChain() const {
-    return chain;
+shared_ptr<Block> Blockchain::createGenesisBlock() {
+    return make_shared<Block>(0, "0", vector<Transaction>(), BlockStatus::CONFIRMED);
 }

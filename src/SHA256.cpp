@@ -1,6 +1,6 @@
 #include "SHA256.h"
-#include <sstream>
 #include <iomanip>
+#include <sstream>
 
 using namespace std;
 
@@ -22,7 +22,6 @@ void SHA256::update(const uint8_t* data, size_t length) {
 array<uint8_t, SHA256::HashSize> SHA256::finalize() {
     array<uint8_t, HashSize> hash;
 
-    // Padding
     buffer[bufferLength++] = 0x80;
     if (bufferLength > 56) {
         while (bufferLength < BlockSize) buffer[bufferLength++] = 0x00;
@@ -31,18 +30,17 @@ array<uint8_t, SHA256::HashSize> SHA256::finalize() {
     }
     while (bufferLength < 56) buffer[bufferLength++] = 0x00;
 
-    // Append length
     for (int i = 7; i >= 0; --i)
         buffer[bufferLength++] = (bitLength >> (i * 8)) & 0xFF;
     processBlock();
 
-    // Convert to hash
     for (size_t i = 0; i < 8; ++i) {
         hash[i * 4 + 0] = (state[i] >> 24) & 0xFF;
         hash[i * 4 + 1] = (state[i] >> 16) & 0xFF;
         hash[i * 4 + 2] = (state[i] >> 8) & 0xFF;
         hash[i * 4 + 3] = (state[i] >> 0) & 0xFF;
     }
+
     return hash;
 }
 
@@ -89,9 +87,9 @@ void SHA256::processBlock() {
     array<uint32_t, 64> m{};
     for (size_t i = 0; i < 16; ++i) {
         m[i] = (buffer[i * 4 + 0] << 24) |
-               (buffer[i * 4 + 1] << 16) |
-               (buffer[i * 4 + 2] << 8) |
-               (buffer[i * 4 + 3]);
+            (buffer[i * 4 + 1] << 16) |
+            (buffer[i * 4 + 2] << 8) |
+            (buffer[i * 4 + 3]);
     }
     for (size_t i = 16; i < 64; ++i) {
         m[i] = delta1(m[i - 2]) + m[i - 7] + delta0(m[i - 15]) + m[i - 16];
@@ -121,4 +119,13 @@ void SHA256::processBlock() {
     state[5] += f;
     state[6] += g;
     state[7] += h;
+}
+
+// Utility function for converting hash to string
+string hashToString(const array<uint8_t, SHA256::HashSize>& hash) {
+    ostringstream oss;
+    for (uint8_t byte : hash) {
+        oss << std::setw(2) << setfill('0') << hex << (int)byte;
+    }
+    return oss.str();
 }

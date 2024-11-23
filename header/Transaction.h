@@ -9,8 +9,8 @@ class Transaction {
 public:
     Transaction(const string& sender, const string& receiver, double amount);
 
-    string getSender() const;
-    string getReceiver() const;
+    const string& getSender() const;
+    const string& getReceiver() const;
     double getAmount() const;
 
 private:
@@ -19,4 +19,4 @@ private:
     double amount;
 };
 
-#endif
+#endif 
