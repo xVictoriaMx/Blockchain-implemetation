@@ -11,9 +11,9 @@ int main() {
     Blockchain blockchain;
     Ledger ledger;
 
-    ledger.createAccount("Alice");
-    ledger.createAccount("Bob");
-    ledger.createAccount("Charlie");
+    ledger.createAccount("Tori");
+    ledger.createAccount("Vic");
+    ledger.createAccount("Victoria");
 
     Miner miner(blockchain, ledger);
 
