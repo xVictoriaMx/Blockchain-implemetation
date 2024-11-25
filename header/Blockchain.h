@@ -7,17 +7,19 @@
 
 using namespace std;
 
-class Blockchain {
-public:
-    Blockchain();
+namespace Blocks {
+    class Blockchain {
+    public:
+        Blockchain();
 
-    void addBlock(const vector<Transaction>& transactions);
-    void printChain() const;
+        void addBlock(const vector<Transaction>& transactions);
+        void printChain() const;
 
-private:
-    vector<shared_ptr<Block>> chain;
+    private:
+        vector<shared_ptr<Block>> chain;
 
-    shared_ptr<Block> createGenesisBlock();
-};
+        shared_ptr<Block> createGenesisBlock();
+    };
+}
 
 #endif

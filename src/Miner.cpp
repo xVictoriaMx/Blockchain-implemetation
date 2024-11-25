@@ -2,6 +2,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace Blocks;
 
 Miner::Miner(Blockchain& blockchain, Ledger& ledger) : blockchain(blockchain), ledger(ledger) {}
 

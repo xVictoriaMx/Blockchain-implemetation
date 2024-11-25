@@ -8,6 +8,7 @@
 #include "Ledger.h"
 
 using namespace std;
+using namespace Blocks;
 
 class Miner {
 public:

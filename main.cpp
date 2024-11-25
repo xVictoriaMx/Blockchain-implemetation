@@ -6,6 +6,7 @@
 #include "Miner.h"
 
 using namespace std;
+using namespace Blocks;
 
 int main() {
     Blockchain blockchain;
